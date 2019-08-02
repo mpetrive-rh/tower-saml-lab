@@ -1,0 +1,54 @@
+---
+
+- block:
+  - name: Get User info
+    uri:
+      url: "{{ onelogin_base_url}}/{{ onelogin_user_api }}?email={{ onelogin_current_email }}"
+      method: GET
+    register: onelogin_user_exists
+
+  - name: Add User if doesn't exist
+    uri:
+      url: "{{ onelogin_base_url}}/{{ onelogin_user_api }}/{{  }}"
+      method: POST
+      body: "{{ payload_body }}"
+    when: not onelogin_user_exists.json.data
+
+  - name: Get User info
+    uri:
+      url: "{{ onelogin_base_url}}/{{ onelogin_user_api }}?email={{ onelogin_current_email }}"
+      method: GET
+    register: onelogin_user_exists
+
+  - name: Update User
+    uri:
+      url: "{{ onelogin_base_url}}/{{ onelogin_user_api }}/{{_current_id}}"
+      method: PUT
+      body: "{{ payload_body | combine(payload_body_update) }}"
+    when: onelogin_user_exists.json.data
+    vars:
+      _current_id: "{{ onelogin_user_exists.json.data[0].id }}"
+
+  - name: Update User passord
+    uri:
+      url: "{{ onelogin_base_url}}/{{ onelogin_user_api_password }}/{{_current_id}}"
+      method: PUT
+      body:
+        password: "{{onelogin_current_password}}"
+        password_confirmation: "{{onelogin_current_password}}"
+    when: onelogin_user_exists.json.data
+    vars:
+      _current_id: "{{ onelogin_user_exists.json.data[0].id }}"
+
+  vars:
+    payload_body:
+      firstname: "{{ onelogin_current_firstname }}"
+      lastname: "{{ onelogin_current_lastname }}"
+      email: "{{onelogin_current_email }}"
+      username: "{{ onelogin_current_user }}"
+      department: automation
+      #group_id: 1
+      title: automation
+      external_id: "1"
+    payload_body_update:
+      status: 1

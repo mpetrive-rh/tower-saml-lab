@@ -1,0 +1,52 @@
+- hosts: localhost
+  gather_facts: no
+  vars_files:  private-vars.yml
+  vars:
+    #onelogin_client_id: VARS_FILE
+    #onelogin_client_secret: VARS_FILE
+    onelogin_base_url: https://api.us.onelogin.com
+    user_data:
+      user_email_base: tower.net
+      user_password: r3dH@t254
+      user_list:
+      - app.dev
+      - app.qa
+      - app.ops
+      - platform.dev
+      - platform.qa
+      - platform.ops
+    #onelogin_token_access_token: VARS_FILE
+  tasks:
+
+  - import_role:
+      name: onelogin_base
+    tags: always
+
+  - include_role:
+      name: onelogin_token
+      apply:
+        tags: always
+    vars:
+      onelogin_token_client_id: "{{ onelogin_client_id }}"
+      onelogin_token_client_secret: "{{ onelogin_client_secret }}"
+    tags: always
+    when: onelogin_token_access_token is not defined
+
+  - include_role:
+      name: onelogin_user
+      apply:
+        tags: users
+    vars:
+      onelogin_user_data: "{{user_data}}"
+    tags: users
+
+  - include_role:
+      name: onelogin_app
+      apply:
+        tags: apps
+    vars:
+      onelogin_app_name: ansible-tower-api
+      onelogin_app_description: "Ansible Tower APP API driven"
+    tags: apps
+
+...

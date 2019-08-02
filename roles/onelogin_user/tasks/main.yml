@@ -1,0 +1,23 @@
+---
+# tasks file for onelogin_user
+
+- block:
+
+  - name: iterate over users
+    include_tasks:
+      file: user-base.yml
+    loop: "{{ onelogin_user_data.user_list }}"
+    loop_control:
+      loop_var: onelogin_current_user
+    vars:
+      onelogin_current_email: "{{ onelogin_current_user }}@{{ onelogin_user_data.user_email_base }}"
+      onelogin_current_firstname: "{{ onelogin_current_user.split('.')[0] }}"
+      onelogin_current_lastname: "{{ onelogin_current_user.split('.')[1] }}"
+      onelogin_current_password: "{{ onelogin_user_data.user_password }}"
+
+  module_defaults:
+    uri:
+      body_format: json
+      return_content: yes
+      headers:
+        Authorization: "bearer {{ onelogin_token_access_token }}"

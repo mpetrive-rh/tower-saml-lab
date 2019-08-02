@@ -1,0 +1,36 @@
+---
+# tasks file for onelogin_user
+
+- block:
+  - name: Get apps
+    uri:
+      url: "{{ onelogin_base_url }}/{{ onelogin_app_api }}?name={{ onelogin_app_name }}"
+      method: GET
+    register: onelogin_apps
+
+  - debug:
+      var: onelogin_apps
+
+  # - uri:
+  #     url: "{{ onelogin_base_url }}/{{ onelogin_app_api }}/{{ item.id }}"
+  #     method: GET
+  #   loop: "{{ onelogin_apps.json }}"
+  #   register: onelogin_apps_detail
+  #
+  # - debug:
+  #     var: onelogin_apps_detail
+  #
+  # - copy:
+  #     content: "{{ item.json | to_nice_yaml }}"
+  #     dest: "{{ item.item.name }}.yml"
+  #   loop: "{{ onelogin_apps_detail.results }}"
+
+  vars:
+    app_payload:
+      connector_id: "{{ onelogin_app_saml_connector_id }}"
+  module_defaults:
+    uri:
+      body_format: json
+      return_content: yes
+      headers:
+        Authorization: "bearer {{ onelogin_token_access_token }}"

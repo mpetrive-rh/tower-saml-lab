@@ -1,0 +1,38 @@
+---
+# tasks file for onelogin_user
+
+- block:
+  - name: Get Users
+    uri:
+      url: "{{ onelogin_base_url}}/{{ onelogin_user_api }}"
+      method: GET
+    register: onelogin_users
+
+  - set_fact:
+      _user_email_list: "{{ onelogin_users.json.data | map(attribute='email') | list }}"
+
+  - name: Add Users
+    uri:
+      url: "{{ onelogin_base_url}}/{{ onelogin_user_api }}"
+      method: POST
+      body:
+        firstname: "{{ item.split('.')[0] }}"
+        lastname: "{{ item.split('.')[1] }}"
+        email: "{{ _email }}"
+        username: "{{ item }}"
+        department: automation
+        group_id: 1
+        title: automation
+        external_id: 1
+    loop: "{{ onelogin_user_data.user_list }}"
+    vars:
+      _email: "{{ item }}@{{ onelogin_user_data.user_email_base }}"
+    when: _email not in _user_email_list
+    register: onelogin_users
+
+  module_defaults:
+    uri:
+      body_format: json
+      return_content: yes
+      headers:
+        Authorization: "bearer {{ onelogin_token_access_token }}"

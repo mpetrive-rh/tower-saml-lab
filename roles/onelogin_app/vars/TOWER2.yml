@@ -1,0 +1,99 @@
+allow_assumed_signin: false
+auth_method: 2
+configuration:
+    audience: ''
+    consumer_url: ''
+    encrypt_assertion: '0'
+    generate_attribute_value_tags: '0'
+    login: ''
+    logout_url: ''
+    recipient: ''
+    relaystate: ''
+    saml_encryption_method_id: '3'
+    saml_initiater_id: '0'
+    saml_issuer_type: '0'
+    saml_nameid_format_id: '0'
+    saml_notbefore: '3'
+    saml_notonorafter: '3'
+    saml_sessionnotonorafter: '1440'
+    saml_sign_element: '0'
+    signature_algorithm: SHA-1
+    validator: ''
+connector_id: 110016
+created_at: '2019-07-31T01:40:47Z'
+description: ''
+id: 967205
+name: TOWER2
+notes: ''
+parameters:
+    saml_username:
+        attributes_transformations: none
+        default_values: null
+        id: 243476
+        label: NameID value
+        provisioned_entitlements: false
+        user_attribute_macros: null
+        user_attribute_mappings: email
+        values: null
+policy_id: null
+provisioning:
+    enabled: false
+role_ids: []
+sso:
+    acs_url: https://customer1-dev.onelogin.com/trust/saml2/http-post/sso/967205
+    certificate:
+        id: 290729
+        name: Standard Strength Certificate (2048-bit)
+        value: '-----BEGIN CERTIFICATE-----
+
+            MIID3zCCAsegAwIBAgIUM1r4RfduetLXV5xA+KTVtcfVUyAwDQYJKoZIhvcNAQEF
+
+            BQAwRjERMA8GA1UECgwIQ3VzdG9tZXIxFTATBgNVBAsMDE9uZUxvZ2luIElkUDEa
+
+            MBgGA1UEAwwRT25lTG9naW4gQWNjb3VudCAwHhcNMTkwNTEyMjI1ODM4WhcNMjQw
+
+            NTEyMjI1ODM4WjBGMREwDwYDVQQKDAhDdXN0b21lcjEVMBMGA1UECwwMT25lTG9n
+
+            aW4gSWRQMRowGAYDVQQDDBFPbmVMb2dpbiBBY2NvdW50IDCCASIwDQYJKoZIhvcN
+
+            AQEBBQADggEPADCCAQoCggEBAOdh2ZInK/X0pxP3MwPlUPHe2AW+PGGe5pVlFbKM
+
+            Ti8J6XbxLxRyG3ZHGecr90XL1DtCEMo6u+mgIslHnY/7TLrdSlOqehZtMlbdPuHi
+
+            xv7EJw9VzXX91zCNIRR4dYISPEBia2VhZ4CYzJ78QY47kT/3Z9v+tYGBzgBk31Sw
+
+            /FKidqdaUPfmSvG6Nzg1xNIz1X3XNJi7fEuiQcQFxFxMNUV9qV2uach6QxjhzJxB
+
+            ClAOXARNLocc2zzYkqP9LYFkliwHjNx2JyTVBZljmMgi6a6eeexNqpniYDrKSct3
+
+            6hSe8hWIzY8Rw3lQU3MHdo6nFwZvLSD+o1kFp+OxBnIOi+MCAwEAAaOBxDCBwTAM
+
+            BgNVHRMBAf8EAjAAMB0GA1UdDgQWBBRtKAoWtmzbiefFLFGauKe/tXE+wzCBgQYD
+
+            VR0jBHoweIAUbSgKFrZs24nnxSxRmrinv7VxPsOhSqRIMEYxETAPBgNVBAoMCEN1
+
+            c3RvbWVyMRUwEwYDVQQLDAxPbmVMb2dpbiBJZFAxGjAYBgNVBAMMEU9uZUxvZ2lu
+
+            IEFjY291bnQgghQzWvhF92560tdXnED4pNW1x9VTIDAOBgNVHQ8BAf8EBAMCB4Aw
+
+            DQYJKoZIhvcNAQEFBQADggEBAFswVjxnkxDr5d23pcneXGtf4jHvIY2kCQY/SKb0
+
+            FpLXTIrTCAYqd/mflwWTdukYEVYT9jsNo5F+iqKMYeB0dgJpO4+j3aIvfp4DzILO
+
+            3GZB/kbyMrLbo0DDd6LgjLCZj7P8H7cw5CUum/QZ1vI+BFxW8IVvVeEL7aY8awGT
+
+            LhmZlOVgxSfLsv3DV27onOwleLbN6GgfL3B0kceV+udYQi6N6Q4G4JYWdSvz1Emj
+
+            6z5PZz2sSfCtSxwzVkx+7XDxCUYiyr8HNZH+eK29eWB8/axh0/aOFrKpOsNu7iRB
+
+            gE86YFCq0Qns6XFzapMl6wTf6p808yUCSvT/60YFq5WKjN0=
+
+            -----END CERTIFICATE-----
+
+            '
+    issuer: https://app.onelogin.com/saml/metadata/80475bac-eb8f-469a-ad5e-56428e48aef7
+    metadata_url: https://app.onelogin.com/saml/metadata/80475bac-eb8f-469a-ad5e-56428e48aef7
+    sls_url: https://customer1-dev.onelogin.com/trust/saml2/http-redirect/slo/967205
+tab_id: 292352
+updated_at: '2019-07-31T01:41:18Z'
+visible: true

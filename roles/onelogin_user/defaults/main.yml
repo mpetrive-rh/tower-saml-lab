@@ -1,0 +1,17 @@
+---
+# defaults file for onelogin_user
+
+onelogin_user_api: api/1/users
+onelogin_user_api_password: api/1/users/set_password_clear_text
+
+#PROTOTYPE
+# onelogin_user_data:
+#   user_email_base: tower.net
+#   user_password: r3dH@t254
+#   user_list:
+#   - app.dev
+#   - app.qa
+#   - app.ops
+#   - platform.dev
+#   - platform.qa
+#   - platform.ops
