@@ -20,26 +20,20 @@
       return_code: [ 200, 201 ]
     when: not onelogin_apps.json
 
-  - name: add application
+  - name: update application
     uri:
       url: "{{ onelogin_base_url }}/{{ onelogin_app_api }}/{{ onelogin_apps.json[0].id }}"
       method: PUT
       body: "{{ app_payload }}"
       return_code: [ 200, 201 ]
     when: onelogin_apps.json
-  # - uri:
-  #     url: "{{ onelogin_base_url }}/{{ onelogin_app_api }}/{{ item.id }}"
-  #     method: GET
-  #   loop: "{{ onelogin_apps.json }}"
-  #   register: onelogin_apps_detail
-  #
-  # - debug:
-  #     var: onelogin_apps_detail
-  #
-  # - copy:
-  #     content: "{{ item.json | to_nice_yaml }}"
-  #     dest: "{{ item.item.name }}.yml"
-  #   loop: "{{ onelogin_apps_detail.results }}"
+    register: onelongin_app_data
+
+  - name: set fact with application configuration needed outside
+    set_fact:
+      onelogin_app_certificate: "{{ onelongin_app_data.json.sso.certificate.value }}"
+
+  #tr -d '\n' < saml_demo.crt | sed -e 's/-*BEGIN CERTIFICATE*-*//g' -e 's/-*END CERTIFICATE*-*//g'
 
   vars:
     app_payload:

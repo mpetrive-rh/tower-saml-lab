@@ -3,9 +3,32 @@
 
 - block:
 
+  - name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
+    openssl_privatekey:
+      path: certs/saml_demo.pem
+      size: 2048
+
+  - name: Generate an OpenSSL Certificate Signing Request
+    openssl_csr:
+      path: certs/saml_demo.csr
+      privatekey_path: certs/saml_demo.pem
+      country_name: US
+      organization_name: ansible
+      common_name: tower.net
+
+  - name: Generate a Self Signed OpenSSL certificate
+    openssl_certificate:
+      path: certs/saml_demo.crt
+      privatekey_path: certs/saml_demo.pem
+      csr_path: certs/saml_demo.csr
+      provider: selfsigned
+
   - uri:
       method: GET
     register: tower_saml_config
+
+
+
 
   - debug: var=tower_saml_config
 
