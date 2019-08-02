@@ -10,7 +10,23 @@
 
   - debug:
       var: onelogin_apps
+      verbosity: 2
 
+  - name: add application
+    uri:
+      url: "{{ onelogin_base_url }}/{{ onelogin_app_api }}"
+      method: POST
+      body: "{{ app_payload }}"
+      return_code: [ 200, 201 ]
+    when: not onelogin_apps.json
+
+  - name: add application
+    uri:
+      url: "{{ onelogin_base_url }}/{{ onelogin_app_api }}/{{ onelogin_apps.json[0].id }}"
+      method: PUT
+      body: "{{ app_payload }}"
+      return_code: [ 200, 201 ]
+    when: onelogin_apps.json
   # - uri:
   #     url: "{{ onelogin_base_url }}/{{ onelogin_app_api }}/{{ item.id }}"
   #     method: GET
@@ -28,6 +44,17 @@
   vars:
     app_payload:
       connector_id: "{{ onelogin_app_saml_connector_id }}"
+      name: "{{ onelogin_app_name }}"
+      description: "{{ onelogin_app_description }}"
+      visible: true
+      configuration:
+        signature_algorithm: SHA-1
+        audience: towersaml
+        consumer_url: https://petrivelli.synology.me/sso/complete/saml/
+        logout_url: ''
+        recipient: https://petrivelli.synology.me/sso/complete/saml/
+        signature_algorithm: SHA-1
+        validator: .*
   module_defaults:
     uri:
       body_format: json

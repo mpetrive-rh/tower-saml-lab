@@ -16,37 +16,45 @@
       - platform.qa
       - platform.ops
     #onelogin_token_access_token: VARS_FILE
+    tower_url: petrivelli.synology.me
   tasks:
 
-  - import_role:
-      name: onelogin_base
-    tags: always
-
   - include_role:
-      name: onelogin_token
-      apply:
-        tags: always
+      name: tower_saml
     vars:
-      onelogin_token_client_id: "{{ onelogin_client_id }}"
-      onelogin_token_client_secret: "{{ onelogin_client_secret }}"
-    tags: always
-    when: onelogin_token_access_token is not defined
-
-  - include_role:
-      name: onelogin_user
-      apply:
-        tags: users
-    vars:
-      onelogin_user_data: "{{user_data}}"
-    tags: users
-
-  - include_role:
-      name: onelogin_app
-      apply:
-        tags: apps
-    vars:
-      onelogin_app_name: ansible-tower-api
-      onelogin_app_description: "Ansible Tower APP API driven"
-    tags: apps
+      tower_saml_host: "{{ tower_url }}"
+      tower_saml_username: "{{ tower_api_user }}"
+      tower_saml_password: "{{ tower_api_password }}"
+  #
+  # - import_role:
+  #     name: onelogin_base
+  #   tags: always
+  #
+  # - include_role:
+  #     name: onelogin_token
+  #     apply:
+  #       tags: always
+  #   vars:
+  #     onelogin_token_client_id: "{{ onelogin_client_id }}"
+  #     onelogin_token_client_secret: "{{ onelogin_client_secret }}"
+  #   tags: always
+  #   when: onelogin_token_access_token is not defined
+  #
+  # - include_role:
+  #     name: onelogin_user
+  #     apply:
+  #       tags: users
+  #   vars:
+  #     onelogin_user_data: "{{user_data}}"
+  #   tags: users
+  #
+  # - include_role:
+  #     name: onelogin_app
+  #     apply:
+  #       tags: apps
+  #   vars:
+  #     onelogin_app_name: ansible-tower-api
+  #     onelogin_app_description: "Ansible Tower APP API driven"
+  #   tags: apps
 
 ...

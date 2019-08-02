@@ -1,0 +1,4 @@
+---
+# defaults file for tower_saml
+
+tower_saml_endpoint: "https://{{ tower_saml_host }}/api/v2/settings/saml/"
