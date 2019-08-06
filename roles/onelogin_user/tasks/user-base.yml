@@ -7,12 +7,24 @@
       method: GET
     register: onelogin_user_exists
 
+  - name: delete user when flag passed
+    uri:
+      url: "{{ onelogin_base_url}}/{{ onelogin_user_api }}/{{ _current_id }}"
+      method: DELETE
+    when:
+      - onelogin_user_delete | default(false) | bool
+      - onelogin_user_exists.json.data
+    vars:
+      _current_id: "{{ onelogin_user_exists.json.data[0].id }}"
+
   - name: Add User if doesn't exist
     uri:
-      url: "{{ onelogin_base_url}}/{{ onelogin_user_api }}/{{  }}"
+      url: "{{ onelogin_base_url}}/{{ onelogin_user_api }}"
       method: POST
       body: "{{ payload_body }}"
-    when: not onelogin_user_exists.json.data
+    when: (not onelogin_user_exists.json.data) or (onelogin_user_delete | default(false) | bool)
+
+    register: onelogin_user_exists
 
   - name: Get User info
     uri:
@@ -39,6 +51,11 @@
     when: onelogin_user_exists.json.data
     vars:
       _current_id: "{{ onelogin_user_exists.json.data[0].id }}"
+
+  - include_tasks:
+      file: user-role.yml
+    vars:
+      _onelogin_user_id: "{{ onelogin_user_exists.json.data[0].id }}"
 
   vars:
     payload_body:

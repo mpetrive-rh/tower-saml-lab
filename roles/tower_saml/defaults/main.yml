@@ -1,4 +1,21 @@
 ---
 # defaults file for tower_saml
 
+tower_saml_vars_only: false
+
 tower_saml_endpoint: "https://{{ tower_saml_host }}/api/v2/settings/saml/"
+
+tower_saml_cert_dir: certs
+tower_saml_pk: "{{ tower_saml_cert_dir }}/saml_demo.pem"
+tower_saml_pk_size: 2048
+tower_saml_csr: "{{ tower_saml_cert_dir }}/saml_demo.csr"
+tower_saml_csr_country: US
+tower_saml_csr_org: ansible
+tower_saml_csr_cn: tower.net
+tower_saml_crt: "{{ tower_saml_cert_dir }}/saml_demo.crt"
+
+# required role parameters
+tower_saml_audience: nil
+tower_saml_issuer_metadata_url: nil
+tower_saml_endpoint_url: nil
+tower_saml_cert: nil

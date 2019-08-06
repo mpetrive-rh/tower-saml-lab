@@ -1,0 +1,21 @@
+---
+
+- name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
+  openssl_privatekey:
+    path: "{{tower_saml_pk}}"
+    size: "{{tower_saml_pk_size}}"
+
+- name: Generate an OpenSSL Certificate Signing Request
+  openssl_csr:
+    path: "{{tower_saml_csr}}"
+    privatekey_path: "{{tower_saml_pk}}"
+    country_name: "{{tower_saml_csr_country}}"
+    organization_name: "{{tower_saml_csr_org}}"
+    common_name: "{{tower_saml_csr_cn}}"
+
+- name: Generate a Self Signed OpenSSL certificate
+  openssl_certificate:
+    path: "{{tower_saml_crt}}"
+    privatekey_path: "{{tower_saml_pk}}"
+    csr_path: "{{tower_saml_csr}}"
+    provider: selfsigned

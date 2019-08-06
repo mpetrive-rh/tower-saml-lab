@@ -1,0 +1,31 @@
+---
+
+- block:
+  - name: create privileges
+    uri:
+      url: "{{ onelogin_base_url }}/{{ onelogin_priv_api }}"
+      body: "{{ saml_priv_payload }}"
+      method: POST
+      status_code: [ 200, 201 ]
+    ignore_errors: yes
+
+  - name: get privileges
+    uri:
+      url: "{{ onelogin_base_url }}/{{ onelogin_priv_api }}"
+      method: GET
+      body_format: raw
+      return_content: false
+
+  vars:
+    saml_priv_payload:
+      name: "User or App Read Only"
+      description: "Can administer users"
+      privilege:
+        Version: "2018-05-18"
+        Statement:
+        - Effect: "Allow"
+          Action:
+            - "apps:List"
+            - "apps:Get"
+          Scope:
+            - "*"

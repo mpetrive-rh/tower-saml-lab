@@ -1,0 +1,23 @@
+---
+
+- block:
+
+  - name: test
+    uri:
+      url: "{{ onelogin_base_url }}/{{ onelogin_role_api }}?name={{ onelogin_role_default_role }}"
+    register: onelogin_role_list_api
+
+  - set_fact:
+      onelogine_role_default_id: "{{ onelogin_role_list_api.json.data[0].id | int }}"
+    when: onelogin_role_list_api.json.data
+
+  - set_fact:
+      onelogine_role_default_id: -1
+    when: not onelogin_role_list_api.json.data
+
+  module_defaults:
+    uri:
+      body_format: json
+      return_content: yes
+      headers:
+        Authorization: "bearer {{ onelogin_token_access_token }}"

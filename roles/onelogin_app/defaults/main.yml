@@ -1,10 +1,10 @@
 ---
 # defaults file for onelogin_app
 
-onelogin_app_saml_test_connector_adv_id: 110016
-onelogin_app_saml_test_connector_attr_id: 42657
-
+# see vars for definition
 onelogin_app_saml_connector_id: "{{onelogin_app_saml_test_connector_attr_id}}"
 
-
-onelogin_app_api: api/2/apps
+# required vars
+onelogin_app_saml_consumer_url: nil
+onelogin_app_saml_recipient_url: nil
+onelogin_app_saml_audience: nil

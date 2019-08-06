@@ -1,0 +1,15 @@
+---
+
+- name: determine user role membership
+  uri:
+    url: "{{ onelogin_base_url}}/{{onelogin_user_api_list_role}}"
+  register: onelogin_user_role_membership
+
+- name: add user to default role
+  uri:
+    url: "{{ onelogin_base_url}}/{{onelogin_user_api_add_role}}"
+    method: PUT
+    body:
+      role_id_array:
+        - "{{ onelogine_role_default_id }}"
+  when: onelogin_role_default_id not in (onelogin_user_role_membership.json.data | flatten)

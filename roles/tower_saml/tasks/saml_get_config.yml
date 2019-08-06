@@ -1,0 +1,10 @@
+---
+
+- uri:
+    method: GET
+  register: tower_saml_config_api
+
+- set_fact:
+    #tower_saml_config: "{{ tower_saml_config_api.json }}"
+    tower_saml_callback_url: "{{ tower_saml_config_api.json.SOCIAL_AUTH_SAML_CALLBACK_URL}}"
+    tower_saml_metadata_url: "{{ tower_saml_config_api.json.SOCIAL_AUTH_SAML_METADATA_URL}}"

@@ -1,0 +1,34 @@
+---
+
+- uri:
+    method: PUT
+    body: "{{ tower_saml_payload }}"
+  vars:
+    tower_saml_payload:
+      SOCIAL_AUTH_SAML_SP_ENTITY_ID: "{{tower_saml_audience}}"
+      SOCIAL_AUTH_SAML_SP_PUBLIC_CERT: "{{ lookup('file', tower_saml_crt) }}"
+      SOCIAL_AUTH_SAML_SP_PRIVATE_KEY: "{{ lookup('file', tower_saml_pk) }}"
+      SOCIAL_AUTH_SAML_ORG_INFO:
+        "en-US":
+          url: https://someinfo.com
+          displayname: some display name
+          name: some other name
+      SOCIAL_AUTH_SAML_TECHNICAL_CONTACT:
+        givenName: Some Contact
+        emailAddress: email@someinfo.com
+      SOCIAL_AUTH_SAML_SUPPORT_CONTACT:
+        givenName: Some Contact
+        emailAddress: email@someinfo.com
+      SOCIAL_AUTH_SAML_ENABLED_IDPS:
+        idp:
+          attr_last_name: User.LastName
+          attr_username: User.email
+          entity_id: "{{ tower_saml_issuer_metadata_url }}"
+          attr_user_permanent_id: name_id
+          url: "{{ tower_saml_endpoint_url }}"
+          attr_email: User.email
+          x509cert: "{{ tower_saml_cert}}"
+          attr_first_name: User.FirstName
+      SOCIAL_AUTH_SAML_ORGANIZATION_MAP:
+        Default:
+          users: true

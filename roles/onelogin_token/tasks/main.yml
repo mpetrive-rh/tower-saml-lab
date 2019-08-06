@@ -1,18 +1,21 @@
 ---
-  
-# tasks file for onelogin_token
-- name: get a token
-  uri:
-    url: "{{ onelogin_base_url }}/auth/oauth2/token"
-    method: POST
-    body:
-      grant_type: client_credentials
-    body_format: json
-    headers:
-      Authorization: "client_id:{{ onelogin_token_client_id }}, client_secret:{{ onelogin_token_client_secret }}"
-    return_content: yes
-    status_code: 200
-  register: _token
 
-- set_fact:
-    onelogin_token_access_token: "{{ _token.json.data[0].access_token }}"
+- block:
+
+  - name: get a token
+    uri:
+      url: "{{ onelogin_base_url }}/auth/oauth2/token"
+      method: POST
+      body:
+        grant_type: client_credentials
+      body_format: json
+      headers:
+        Authorization: "client_id:{{ onelogin_token_client_id }}, client_secret:{{ onelogin_token_client_secret }}"
+      return_content: yes
+      status_code: 200
+    register: _token
+
+  - set_fact:
+      onelogin_token_access_token: "{{ _token.json.data[0].access_token }}"
+
+  when: onelogin_token_access_token is not defined

@@ -17,31 +17,48 @@
       - platform.ops
     #onelogin_token_access_token: VARS_FILE
     tower_url: petrivelli.synology.me
+    saml_audience: towersaml
+    saml_app_name: ansible-tower-api
+    saml_app_description: "Ansible Tower APP API driven"
   tasks:
 
-  - include_role:
-      name: tower_saml
-      apply:
-        tags: tower
-    vars:
-      tower_saml_host: "{{ tower_url }}"
-      tower_saml_username: "{{ tower_api_user }}"
-      tower_saml_password: "{{ tower_api_password }}"
-    tags: tower
-
-  - import_role:
-      name: onelogin_base
-    tags: always
-
-  - include_role:
+  - name: get a onelogin oath2 token and base vars
+    import_role:
       name: onelogin_token
-      apply:
-        tags: always
     vars:
       onelogin_token_client_id: "{{ onelogin_client_id }}"
       onelogin_token_client_secret: "{{ onelogin_client_secret }}"
     tags: always
-    when: onelogin_token_access_token is not defined
+
+  - include_role:
+      name: onelogin_role
+      apply:
+        tags: roles
+    tags: roles
+
+  - name: get base tower SAML configuration
+    include_role:
+      name: tower_saml
+      apply:
+        tags: always
+    vars:
+      tower_saml_host: "{{ tower_url }}"
+      tower_saml_username: "{{ tower_api_user }}"
+      tower_saml_password: "{{ tower_api_password }}"
+      tower_saml_vars_only: true
+    tags: always
+
+  - include_role:
+      name: onelogin_app
+      apply:
+        tags: apps
+    vars:
+      onelogin_app_name: "{{ saml_app_name }}"
+      onelogin_app_description: "{{ saml_app_description }}"
+      onelogin_app_saml_consumer_url: "{{ tower_saml_callback_url }}"
+      onelogin_app_saml_recipient_url: "{{ tower_saml_callback_url }}"
+      onelogin_app_saml_audience: "{{ saml_audience }}"
+    tags: apps
 
   - include_role:
       name: onelogin_user
@@ -51,13 +68,19 @@
       onelogin_user_data: "{{user_data}}"
     tags: users
 
-  - include_role:
-      name: onelogin_app
+  - name: initial tower configuration
+    include_role:
+      name: tower_saml
       apply:
-        tags: apps
+        tags: tower
     vars:
-      onelogin_app_name: ansible-tower-api
-      onelogin_app_description: "Ansible Tower APP API driven"
-    tags: apps
+      tower_saml_host: "{{ tower_url }}"
+      tower_saml_username: "{{ tower_api_user }}"
+      tower_saml_password: "{{ tower_api_password }}"
+      tower_saml_audience: "{{ saml_audience }}"
+      tower_saml_issuer_metadata_url: "{{ onelogin_app_issuer_url }}"
+      tower_saml_endpoint_url: "{{ onelogin_app_acs_url }}"
+      tower_saml_cert: "{{ onelogin_app_certificate_str }}"
+    tags: tower
 
 ...

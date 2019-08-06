@@ -1,0 +1,6 @@
+---
+# defaults file for onelogin_role
+
+onelogin_role_api: api/1/roles
+#onelogin_role_default_role: tower-role
+onelogin_role_default_role: Default

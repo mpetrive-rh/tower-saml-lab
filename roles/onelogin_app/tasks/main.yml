@@ -17,23 +17,35 @@
       url: "{{ onelogin_base_url }}/{{ onelogin_app_api }}"
       method: POST
       body: "{{ app_payload }}"
-      return_code: [ 200, 201 ]
+      status_code: [ 200, 201 ]
     when: not onelogin_apps.json
+    register: onelogin_app_data
 
   - name: update application
     uri:
       url: "{{ onelogin_base_url }}/{{ onelogin_app_api }}/{{ onelogin_apps.json[0].id }}"
       method: PUT
       body: "{{ app_payload }}"
-      return_code: [ 200, 201 ]
+      status_code: [ 200, 201 ]
     when: onelogin_apps.json
-    register: onelongin_app_data
+    register: onelogin_app_data
 
   - name: set fact with application configuration needed outside
     set_fact:
-      onelogin_app_certificate: "{{ onelongin_app_data.json.sso.certificate.value }}"
+      onelogin_app_certificate: "{{ _cert_value }}"
+      onelogin_app_certificate_str: "{{ _cert_value_flat }}"
+      # aka saml 2.0 endpoint
+      onelogin_app_acs_url: "{{onelogin_app_data.json.sso.acs_url}}"
+      onelogin_app_issuer_url: "{{onelogin_app_data.json.sso.issuer}}"
+    vars:
+      _cert_value: "{{ onelogin_app_data.json.sso.certificate.value }}"
+      _cert_value_flat: "{{ _cert_value | replace('\n', '') | regex_replace('-*(BEGIN|END) CERTIFICATE-*','') }}"
+    # COMMAND LINE FILTER
+    #tr -d '\n' < saml_demo.crt | sed -e 's/-*BEGIN CERTIFICATE*-*//g' -e 's/-*END CERTIFICATE*-*//g'
 
-  #tr -d '\n' < saml_demo.crt | sed -e 's/-*BEGIN CERTIFICATE*-*//g' -e 's/-*END CERTIFICATE*-*//g'
+
+  # - include_tasks:
+  #     file: saml_privilege.yml
 
   vars:
     app_payload:
@@ -43,12 +55,70 @@
       visible: true
       configuration:
         signature_algorithm: SHA-1
-        audience: towersaml
-        consumer_url: https://petrivelli.synology.me/sso/complete/saml/
+        audience: "{{ onelogin_app_saml_audience }}"
+        consumer_url: "{{ onelogin_app_saml_consumer_url }}"
         logout_url: ''
-        recipient: https://petrivelli.synology.me/sso/complete/saml/
-        signature_algorithm: SHA-1
+        recipient: "{{ onelogin_app_saml_recipient_url }}"
         validator: .*
+      role_ids:
+        - "{{ onelogine_role_default_id }}"
+      parameters:
+        saml_username:
+          id: 73732
+          values:
+          user_attribute_macros: ''
+          label: Email (SAML NameID)
+          provisioned_entitlements: false
+          user_attribute_mappings: email
+          attributes_transformations:
+          default_values:
+        PersonImmutableID:
+          id: 73755
+          values:
+          user_attribute_macros:
+          label: PersonImmutableID
+          provisioned_entitlements: false
+          user_attribute_mappings:
+          attributes_transformations:
+          default_values:
+        User.LastName:
+          id: 73741
+          values:
+          user_attribute_macros: ''
+          label: Last Name (Attribute)
+          provisioned_entitlements: false
+          user_attribute_mappings: lastname
+          attributes_transformations:
+          default_values:
+        User.email:
+          id: 73739
+          values:
+          user_attribute_macros: ''
+          label: E-mail (Attribute)
+          provisioned_entitlements: false
+          user_attribute_mappings: email
+          attributes_transformations:
+          default_values:
+        memberOf:
+          id: 73742
+          values:
+          user_attribute_macros: ''
+          label: Member of (Groups) (Attribute)
+          provisioned_entitlements: false
+          user_attribute_mappings: member_of
+          attributes_transformations:
+          default_values:
+        User.FirstName:
+          id: 73740
+          values:
+          user_attribute_macros: ''
+          label: First Name (Attribute)
+          provisioned_entitlements: false
+          user_attribute_mappings: firstname
+          attributes_transformations:
+          default_values:
+
+
   module_defaults:
     uri:
       body_format: json

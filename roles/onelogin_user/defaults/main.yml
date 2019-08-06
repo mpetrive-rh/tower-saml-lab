@@ -3,6 +3,8 @@
 
 onelogin_user_api: api/1/users
 onelogin_user_api_password: api/1/users/set_password_clear_text
+onelogin_user_api_add_role: "api/1/users/{{ _onelogin_user_id }}/add_roles"
+onelogin_user_api_list_role: "api/1/users/{{ _onelogin_user_id }}/roles"
 
 #PROTOTYPE
 # onelogin_user_data:
