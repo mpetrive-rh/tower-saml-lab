@@ -1,2 +1,3 @@
 ---
 # defaults file for onelogin_token
+onelogin_base_url: https://api.us.onelogin.com
