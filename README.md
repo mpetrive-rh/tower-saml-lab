@@ -1,6 +1,8 @@
 Ansible Tower SAML integration with Onelogin Identity Provider
 =========
 
+[Repository link](https://gitlab.consulting.redhat.com/automation_practice/tower-saml-lab)
+
 This builds on the excellent Ansible blog post [Using SAML with Ansible Tower](https://www.ansible.com/blog/using-saml-with-red-hat-ansible-tower) by Chris Meyers of Ansible Engineering fame.  The playbooks and roles provided in this repo automates the configuration outline in the aforementioned blog post and provides additional configuration of Ansible Tower and Onelogin identity provider (SAML)
 
 This content can help consultants understand how Ansible Tower SAML integration is configured, basic Tower SAML RBAC and building out an Onelogin SAML application
