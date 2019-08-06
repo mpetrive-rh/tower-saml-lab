@@ -1,31 +1,42 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+onelogin token role to obtain oath2 token
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- onelogin developer account
+- API access setup at https://CUSTOMER_NAME.onelogin.com/api_credentials and client_id and client_secret recorded
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+*input*
+
+- onelogin_token_client_id: client_id from onelogin API creds
+- onelogin_token_client_secret: client_secret from onelogin API creds
+
+*output*
+
+- onelogin_token_access_token: access token to be used in future requests in header. `Authorization: bearer {{ onelogin_token_access_token }}`
+
+- onelogin_base_url: base API url
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+- name: get a onelogin oath2 token and base vars
+  import_role:
+    name: onelogin_token
+  vars:
+    onelogin_token_client_id: "{{ onelogin_client_id }}"
+    onelogin_token_client_secret: "{{ onelogin_client_secret }}"
 
 License
 -------
@@ -35,4 +46,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Marc Petrivelli mpetrive@redhat.com

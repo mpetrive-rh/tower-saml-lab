@@ -1,31 +1,40 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+Configure a Onelogin application
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- `onelogin_token` role imported
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+See default/main.yml
+
+*input*
+
+- onelogin_app_name: Onelogin application name
+- onelogin_app_description: Onelogin application description
+- onelogin_app_saml_consumer_url: Tower ACS consumer URL
+- onelogin_app_saml_recipient_url: Tower ACS consumer URL
+- onelogin_app_saml_audience: SAML2.0 audience
+
+*output*
+
+- onelogin_app_certificate: Onelogin application certificate (full)
+- onelogin_app_certificate_str: Onelogin application certificate (string)
+- onelogin_app_acs_url: Onelogin SAML2.0 endpoint
+- onelogin_app_issuer_url: Onelogin issuer URL
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
 
 License
 -------
@@ -35,4 +44,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Marc Petrivelli mpetrive@redhat.com

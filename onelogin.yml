@@ -4,18 +4,25 @@
   vars:
     #onelogin_client_id: VARS_FILE
     #onelogin_client_secret: VARS_FILE
-    onelogin_base_url: https://api.us.onelogin.com
+    #onelogin_token_access_token: VARS_FILE
+
     user_data:
       user_email_base: tower.net
       user_password: r3dH@t254
       user_list:
-      - app.dev
-      - app.qa
-      - app.ops
-      - platform.dev
-      - platform.qa
-      - platform.ops
-    #onelogin_token_access_token: VARS_FILE
+      - username: app.dev
+        department: application
+      - username: app.qa
+        department: application
+      - username: app.ops
+        department: application
+      - username: platform.dev
+        department: platform
+      - username: platform.qa
+        department: platform
+      - username: platform.ops
+        department: platform
+
     tower_url: petrivelli.synology.me
     saml_audience: towersaml
     saml_app_name: ansible-tower-api
@@ -30,11 +37,12 @@
       onelogin_token_client_secret: "{{ onelogin_client_secret }}"
     tags: always
 
-  - include_role:
+  - name: get id of default role
+    include_role:
       name: onelogin_role
       apply:
-        tags: roles
-    tags: roles
+        tags: always
+    tags: always
 
   - name: get base tower SAML configuration
     include_role:
@@ -48,7 +56,8 @@
       tower_saml_vars_only: true
     tags: always
 
-  - include_role:
+  - name: create/update onelogin app
+    include_role:
       name: onelogin_app
       apply:
         tags: apps
@@ -60,15 +69,17 @@
       onelogin_app_saml_audience: "{{ saml_audience }}"
     tags: apps
 
-  - include_role:
+  - name: create/update onelogin users
+    include_role:
       name: onelogin_user
       apply:
         tags: users
     vars:
       onelogin_user_data: "{{user_data}}"
+      onelogin_user_role_id: "{{ onelogin_role_default_id }}"
     tags: users
 
-  - name: initial tower configuration
+  - name: complete tower configuration
     include_role:
       name: tower_saml
       apply:

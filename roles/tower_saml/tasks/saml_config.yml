@@ -32,3 +32,14 @@
       SOCIAL_AUTH_SAML_ORGANIZATION_MAP:
         Default:
           users: true
+      SOCIAL_AUTH_SAML_ORGANIZATION_ATTR:
+        saml_attr: department
+        saml_admin_attr: department
+        remove: true
+        remove_admins: false
+      SOCIAL_AUTH_SAML_TEAM_ATTR:
+        saml_attr: role
+        remove: false
+        team_org_map:
+          - team: development
+            organization: platform

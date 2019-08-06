@@ -23,7 +23,6 @@
       method: POST
       body: "{{ payload_body }}"
     when: (not onelogin_user_exists.json.data) or (onelogin_user_delete | default(false) | bool)
-
     register: onelogin_user_exists
 
   - name: Get User info
@@ -62,8 +61,8 @@
       firstname: "{{ onelogin_current_firstname }}"
       lastname: "{{ onelogin_current_lastname }}"
       email: "{{onelogin_current_email }}"
-      username: "{{ onelogin_current_user }}"
-      department: automation
+      username: "{{ onelogin_current_username }}"
+      department: "{{ onelogin_current_department }}"
       #group_id: 1
       title: automation
       external_id: "1"

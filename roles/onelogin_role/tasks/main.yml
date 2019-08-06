@@ -8,11 +8,11 @@
     register: onelogin_role_list_api
 
   - set_fact:
-      onelogine_role_default_id: "{{ onelogin_role_list_api.json.data[0].id | int }}"
+      onelogin_role_default_id: "{{ onelogin_role_list_api.json.data[0].id | int }}"
     when: onelogin_role_list_api.json.data
 
   - set_fact:
-      onelogine_role_default_id: -1
+      onelogin_role_default_id: -1
     when: not onelogin_role_list_api.json.data
 
   module_defaults:

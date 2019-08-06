@@ -1,31 +1,44 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+Configure and obtain Tower SAML configuration.  Generates certificate/key for use in SAML configuration.  Provides for information gather only
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- `onelogin_token` role imported
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+See default/main.yml
+
+*input*
+
+- tower_saml_host: tower API location
+- tower_saml_username: tower API user
+- tower_saml_password: tower API password
+- tower_saml_vars_only: indicated whether Tower SAML configuration should be read vs written. Default: false
+
+if `tower_saml_vars_only == true`
+
+- tower_saml_audience: SAML audience name/ Tower entity ID
+- tower_saml_issuer_metadata_url: onelogin issuer URL
+- tower_saml_endpoint_url: onelogin SAML2.0 endpoint
+- tower_saml_cert: onelogin SAML2.0 certificate in string format
+
+*output*
+
+- tower_saml_callback_url: Tower ACS URL for SSO callback
+- tower_saml_metadata_url: Tower ACS metadata URL
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
 
 License
 -------
@@ -35,4 +48,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Marc Petrivelli mpetrive@redhat.com

@@ -43,10 +43,6 @@
     # COMMAND LINE FILTER
     #tr -d '\n' < saml_demo.crt | sed -e 's/-*BEGIN CERTIFICATE*-*//g' -e 's/-*END CERTIFICATE*-*//g'
 
-
-  # - include_tasks:
-  #     file: saml_privilege.yml
-
   vars:
     app_payload:
       connector_id: "{{ onelogin_app_saml_connector_id }}"
@@ -61,7 +57,7 @@
         recipient: "{{ onelogin_app_saml_recipient_url }}"
         validator: .*
       role_ids:
-        - "{{ onelogine_role_default_id }}"
+        - "{{ onelogin_role_default_id }}"
       parameters:
         saml_username:
           id: 73732
@@ -117,7 +113,16 @@
           user_attribute_mappings: firstname
           attributes_transformations:
           default_values:
-
+        department:
+          id: 305721
+          values:
+          user_attribute_macros: ''
+          label: department
+          provisioned_entitlements: false
+          user_attribute_mappings: department
+          attributes_transformations:
+          default_values:
+          include_in_saml_assertion: true
 
   module_defaults:
     uri:

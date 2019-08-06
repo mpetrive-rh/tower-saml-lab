@@ -11,5 +11,5 @@
     method: PUT
     body:
       role_id_array:
-        - "{{ onelogine_role_default_id }}"
-  when: onelogin_role_default_id not in (onelogin_user_role_membership.json.data | flatten)
+        - "{{ onelogin_user_role_id }}"
+  when: onelogin_user_role_id not in (onelogin_user_role_membership.json.data | flatten)
