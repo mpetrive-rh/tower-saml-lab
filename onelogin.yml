@@ -1,34 +1,7 @@
 - hosts: localhost
   gather_facts: no
   vars_files:  private-vars.yml
-  vars:
-    #onelogin_client_id: VARS_FILE
-    #onelogin_client_secret: VARS_FILE
-    #onelogin_token_access_token: VARS_FILE
-
-    user_data:
-      user_email_base: tower.net
-      user_password: r3dH@t254
-      user_list:
-      - username: app.dev
-        department: application
-      - username: app.qa
-        department: application
-      - username: app.ops
-        department: application
-      - username: platform.dev
-        department: platform
-      - username: platform.qa
-        department: platform
-      - username: platform.ops
-        department: platform
-
-    tower_url: petrivelli.synology.me
-    saml_audience: towersaml
-    saml_app_name: ansible-tower-api
-    saml_app_description: "Ansible Tower APP API driven"
   tasks:
-
   - name: get a onelogin oath2 token and base vars
     import_role:
       name: onelogin_token
