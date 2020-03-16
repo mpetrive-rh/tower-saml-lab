@@ -1,0 +1,28 @@
+
+onelogin_client_id: <<onelogin API access client_id>>
+onelogin_client_secret: <<onelogin API access client_secret>>
+
+tower_api_user: <<ansible tower system admin user>>
+tower_api_password: <<ansible tower system admin password>>
+
+tower_url: <<public/IP hostname>>
+saml_audience: towersaml
+saml_app_name: ansible-tower-api
+saml_app_description: "Ansible Tower APP API driven"
+
+user_data:
+  user_email_base: tower.net
+  user_password: <<default password for onelogin users>>
+  user_list:
+  - username: app.dev
+    department: application
+  - username: app.qa
+    department: application
+  - username: app.ops
+    department: application
+  - username: platform.dev
+    department: platform
+  - username: platform.qa
+    department: platform
+  - username: platform.ops
+    department: platform
